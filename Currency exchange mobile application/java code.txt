@@ -1,0 +1,75 @@
+package com.example.lecture1mobilecomputing;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.os.Bundle;
+import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import java.text.DecimalFormat;
+
+public class MainActivity extends AppCompatActivity {
+    Spinner dropdown;
+    Spinner dropdown1 ;
+    EditText valTxt;
+    Button conBtn;
+    TextView resTxt;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        dropdown = findViewById(R.id.fromSpinner);
+        dropdown1 = findViewById(R.id.toSpinner);
+        valTxt= findViewById(R.id.valueEdt);
+        resTxt=findViewById(R.id.resultTxt);
+        conBtn=findViewById(R.id.convertBtn);
+        String[] items = new String[]{"EGP", "USD"};
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, items);
+        dropdown.setAdapter(adapter);
+        dropdown1.setAdapter(adapter);
+
+        conBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                 String text = dropdown.getSelectedItem().toString();
+                 String text1 = dropdown1.getSelectedItem().toString();
+                 String Value=valTxt.getText().toString();
+                if(!(Value.equals("")) && !(Value.equals(".")))
+                {
+                    if((text=="EGP" && text1=="EGP") || (text=="USD" && text1=="USD")  )
+                    {
+                        Toast.makeText(getApplicationContext(),"From and To are same",Toast.LENGTH_LONG).show();
+                        resTxt.setText("Result");
+
+                    }
+                    else if((text=="EGP" && text1=="USD"))
+                    {
+                        double val=Double.parseDouble(Value);
+                        double result=val/15.9;
+                        resTxt.setText(String.format("%.2f", result) + " $");
+                    }
+                    else if((text=="USD" && text1=="EGP"))
+                    {
+                        double val=Double.parseDouble(Value);
+                        double result=val*15.9;
+                        resTxt.setText(String.format("%.2f", result)+ " LE");
+                    }
+                }
+                else if((Value.equals("")) ||(Value.equals(".")) )
+                {
+                    Toast.makeText(getApplicationContext(),"the value empty",Toast.LENGTH_LONG).show();
+                }
+
+            }
+        });
+
+
+
+    }
+}
